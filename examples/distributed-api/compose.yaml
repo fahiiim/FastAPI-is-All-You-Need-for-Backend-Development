@@ -1,0 +1,68 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d app"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+    volumes:
+      - distributed_api_db:/var/lib/postgresql/data
+
+  redis:
+    image: redis:8-alpine
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "256mb", "--maxmemory-policy", "noeviction"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+
+  migrate:
+    build: .
+    command: ["python", "-m", "app.init_db"]
+    environment: &service-env
+      DATABASE_URL: postgresql+psycopg://app:app@db:5432/app
+      REDIS_URL: redis://redis:6379/0
+      API_KEY: local-development-key
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    build: .
+    environment: *service-env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
+  worker:
+    build: .
+    command: ["celery", "-A", "app.celery_app:celery", "worker", "--loglevel=INFO", "--concurrency=2"]
+    environment: *service-env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+
+  dispatcher:
+    build: .
+    command: ["celery", "-A", "app.celery_app:celery", "beat", "--loglevel=INFO"]
+    environment: *service-env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+
+volumes:
+  distributed_api_db:
