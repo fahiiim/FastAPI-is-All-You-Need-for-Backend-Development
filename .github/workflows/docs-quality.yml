@@ -1,0 +1,58 @@
+name: Documentation quality
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check Markdown, links, style, and Python fences
+        run: python tools/check_docs.py
+      - name: Build documentation site
+        run: |
+          python -m pip install -r requirements-docs.txt
+          mkdocs build --strict
+
+  example-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        example: [basic-crud, production-api, ai-api]
+    defaults:
+      run:
+        working-directory: examples/${{ matrix.example }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install example
+        run: python -m pip install -e ".[test]"
+      - name: Compile
+        run: python -m compileall -q app
+      - name: Test
+        run: pytest
+
+  distributed-example:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: examples/distributed-api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e .
+      - run: python -m compileall -q app
