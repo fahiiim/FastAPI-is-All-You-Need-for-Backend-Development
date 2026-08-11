@@ -1,0 +1,109 @@
+site_name: FastAPI Backend Engineering
+site_description: Production FastAPI engineering handbook and interview guide
+docs_dir: .
+site_dir: ../fastapi-backend-engineering-site
+exclude_docs: |
+  .git/**
+  .github/**
+  tools/**
+  **/__pycache__/**
+  **/.pytest_cache/**
+  examples/**/app/**
+  examples/**/tests/**
+  examples/**/migrations/**
+  examples/**/Dockerfile
+  examples/**/compose.yaml
+  examples/**/pyproject.toml
+  examples/**/alembic.ini
+  examples/**/.env.example
+  requirements-docs.txt
+  LICENSE
+  .editorconfig
+  .gitignore
+  mkdocs.yml
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - content.code.copy
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+nav:
+  - Home: README.md
+  - Start here: docs/index.md
+  - Foundations:
+      - Python for backend engineering: docs/00-foundations/python-for-backend.md
+      - HTTP, REST, and API design: docs/00-foundations/http-rest-api-design.md
+  - FastAPI core:
+      - Framework and routing: docs/01-fastapi-core/framework-routing-and-openapi.md
+      - Request lifecycle: docs/01-fastapi-core/request-response-lifecycle.md
+      - Pydantic and validation: docs/01-fastapi-core/pydantic-validation.md
+      - Dependency injection: docs/01-fastapi-core/dependency-injection.md
+      - Async and concurrency: docs/01-fastapi-core/async-concurrency.md
+      - Middleware, errors, and I/O: docs/01-fastapi-core/middleware-errors-and-io.md
+  - Data engineering:
+      - Relational databases: docs/02-data/relational-databases.md
+      - SQLAlchemy 2.x: docs/02-data/sqlalchemy-2.md
+      - Alembic and transactions: docs/02-data/alembic-and-transactions.md
+      - Queries and pagination: docs/02-data/querying-pagination-and-performance.md
+  - Security:
+      - Authentication and tokens: docs/03-security/authentication-and-tokens.md
+      - Authorization and multi-tenancy: docs/03-security/authorization-and-multitenancy.md
+      - Application security: docs/03-security/application-security.md
+  - Production engineering:
+      - Configuration, logging, and errors: docs/04-production/configuration-logging-and-errors.md
+      - Caching, Redis, and rate limiting: docs/04-production/caching-redis-and-rate-limiting.md
+      - Queues, workers, and scheduling: docs/04-production/queues-workers-and-scheduling.md
+      - Integrations, webhooks, and resilience: docs/04-production/integrations-webhooks-and-resilience.md
+      - Testing strategy: docs/04-production/testing-strategy.md
+      - Containers and deployment: docs/04-production/containers-and-deployment.md
+      - Performance and scalability: docs/04-production/performance-and-scalability.md
+      - Observability: docs/04-production/observability.md
+  - AI backends:
+      - Production AI APIs: docs/05-ai-backends/production-ai-apis.md
+      - RAG and document ingestion: docs/05-ai-backends/rag-and-ingestion.md
+  - Architecture:
+      - Backend project structure: backend-project-structure.md
+      - Pattern comparison: architecture/architecture-patterns.md
+      - Production topology: architecture/production-architecture.md
+      - Distributed systems: architecture/distributed-systems.md
+      - System design case studies: architecture/system-design-case-studies.md
+  - Decision guides:
+      - Async and execution models: decision-guides/async-and-execution-models.md
+      - Caching, Redis, and rate limits: decision-guides/caching-redis-rate-limits.md
+      - Jobs, messaging, and realtime: decision-guides/jobs-messaging-and-realtime.md
+      - Persistence and architecture: decision-guides/persistence-and-architecture.md
+  - Interview preparation:
+      - Guide: interview/README.md
+      - Beginner: interview/beginner.md
+      - Intermediate: interview/intermediate.md
+      - Advanced: interview/advanced.md
+      - Senior: interview/senior.md
+      - Scenarios: interview/scenario-based.md
+      - Topic drills: interview/topic-drills.md
+  - Field references:
+      - Backend roadmap: resources/backend-roadmap.md
+      - Common mistakes: resources/common-mistakes.md
+      - Glossary: resources/glossary.md
+      - Production checklist: resources/production-checklist.md
+      - Source catalog: resources/sources.md
+  - Reference applications:
+      - Guide: examples/README.md
+      - Basic CRUD: examples/basic-crud/README.md
+      - Production API: examples/production-api/README.md
+      - Distributed API: examples/distributed-api/README.md
+      - AI API: examples/ai-api/README.md
+  - Project:
+      - Contributing: CONTRIBUTING.md
+      - Security policy: SECURITY.md
