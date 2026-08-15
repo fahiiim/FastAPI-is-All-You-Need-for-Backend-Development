@@ -177,7 +177,9 @@ class JobWorker:
     ) -> None:
         now = utc_now()
         should_retry = error.retriable and claimed.attempt < claimed.max_attempts
-        retry_delay = self.settings.job_retry_base_seconds * (2 ** (claimed.attempt - 1))
+        retry_delay = self.settings.job_retry_base_seconds * (
+            2 ** (claimed.attempt - 1)
+        )
         usage: TokenUsage | None = error.usage
 
         values: dict[str, object] = {
@@ -277,7 +279,9 @@ class JobWorker:
             except asyncio.CancelledError:
                 raise
             except Exception:
-                logger.exception("Worker slot failed before claiming or finalizing a job")
+                logger.exception(
+                    "Worker slot failed before claiming or finalizing a job"
+                )
                 processed = False
 
             if not processed:
@@ -308,4 +312,3 @@ async def run_worker() -> None:
 
 if __name__ == "__main__":
     asyncio.run(run_worker())
-

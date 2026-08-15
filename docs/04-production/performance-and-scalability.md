@@ -422,7 +422,7 @@ Failing quickly under unavoidable overload often preserves more useful throughpu
 - [SQLAlchemy Connection Pooling](https://docs.sqlalchemy.org/en/20/core/pooling.html)
 - [PostgreSQL: Using EXPLAIN](https://www.postgresql.org/docs/current/using-explain.html)
 - [Pydantic Performance](https://docs.pydantic.dev/latest/concepts/performance/)
-- [Uvicorn Resource Limits](https://www.uvicorn.org/settings/#resource-limits)
+- [Uvicorn Resource Limits](https://uvicorn.dev/settings/#resource-limits)
 - [Locust Documentation](https://docs.locust.io/)
 
 ## Related topics

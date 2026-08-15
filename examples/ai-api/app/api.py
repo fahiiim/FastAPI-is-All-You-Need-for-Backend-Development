@@ -7,7 +7,6 @@ from uuid import UUID
 
 from fastapi import (
     APIRouter,
-    BackgroundTasks,
     Depends,
     Header,
     HTTPException,
@@ -110,12 +109,14 @@ async def stream_generation(
         provider_request=_provider_request(payload, principal, settings),
         lease=lease,
         max_output_chars=settings.max_stream_output_chars,
+        provider_timeout_seconds=settings.provider_timeout_seconds,
     )
     return StreamingResponse(
         event_stream,
         media_type="text/event-stream",
         headers={
             "Cache-Control": "no-cache, no-transform",
+            "Connection": "keep-alive",
             "X-Accel-Buffering": "no",
         },
         background=BackgroundTask(lease.release),
@@ -189,4 +190,3 @@ async def read_job(
             detail="job not found",
         )
     return JobView.from_job(job)
-

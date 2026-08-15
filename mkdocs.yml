@@ -1,13 +1,27 @@
 site_name: FastAPI Backend Engineering
 site_description: Production FastAPI engineering handbook and interview guide
-docs_dir: .
-site_dir: ../fastapi-backend-engineering-site
+repo_name: fahiiim/FastAPI-is-All-You-Need-for-Backend-Development
+repo_url: https://github.com/fahiiim/FastAPI-is-All-You-Need-for-Backend-Development
+docs_dir: .mkdocs-source
+site_dir: .site-build
 exclude_docs: |
   .git/**
   .github/**
+  .mypy_cache/**
+  .openai/**
+  .ruff_cache/**
+  .site-build/**
+  .venv/**
+  build/**
+  dist/**
+  hosting/**
+  htmlcov/**
+  node_modules/**
   tools/**
+  venv/**
   **/__pycache__/**
   **/.pytest_cache/**
+  **/*.egg-info/**
   examples/**/app/**
   examples/**/tests/**
   examples/**/migrations/**
@@ -16,8 +30,9 @@ exclude_docs: |
   examples/**/pyproject.toml
   examples/**/alembic.ini
   examples/**/.env.example
+  package.json
+  package-lock.json
   requirements-docs.txt
-  LICENSE
   .editorconfig
   .gitignore
   mkdocs.yml

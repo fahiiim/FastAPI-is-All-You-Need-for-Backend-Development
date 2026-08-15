@@ -16,7 +16,7 @@ Chapters cite the specific pages that support version-sensitive claims. This cat
 - [FastAPI documentation](https://fastapi.tiangolo.com/): routing, dependencies, security helpers, response handling, deployment, and testing.
 - [Starlette documentation](https://www.starlette.io/): ASGI middleware, requests, responses, lifespan, background tasks, WebSockets, and test client behavior.
 - [Pydantic documentation](https://docs.pydantic.dev/latest/): Pydantic v2 validation, serialization, settings, fields, and model configuration.
-- [Uvicorn documentation](https://www.uvicorn.org/): ASGI server settings, process management, proxy headers, and deployment behavior.
+- [Uvicorn documentation](https://uvicorn.dev/): ASGI server settings, process management, proxy headers, and deployment behavior.
 
 ## Data systems
 

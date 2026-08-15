@@ -3,9 +3,10 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+from collections.abc import AsyncGenerator
 from contextlib import aclosing
 from dataclasses import dataclass
-from typing import Any, AsyncGenerator
+from typing import Any
 from uuid import uuid4
 
 from fastapi import Request
@@ -33,7 +34,7 @@ def _usage_payload(usage: TokenUsage) -> dict[str, int | None]:
 
 def encode_sse(event: str, data: dict[str, Any]) -> bytes:
     payload = json.dumps(data, ensure_ascii=True, separators=(",", ":"))
-    return f"event: {event}\ndata: {payload}\n\n".encode("utf-8")
+    return f"event: {event}\ndata: {payload}\n\n".encode()
 
 
 @dataclass(slots=True)
@@ -41,7 +42,7 @@ class StreamLease:
     semaphore: asyncio.Semaphore
     released: bool = False
 
-    def release(self) -> None:
+    async def release(self) -> None:
         if not self.released:
             self.released = True
             self.semaphore.release()
@@ -54,6 +55,7 @@ async def generate_sse(
     provider_request: ProviderRequest,
     lease: StreamLease,
     max_output_chars: int,
+    provider_timeout_seconds: float,
 ) -> AsyncGenerator[bytes, None]:
     request_id = uuid4().hex
     emitted_chars = 0
@@ -67,39 +69,47 @@ async def generate_sse(
             {"request_id": request_id, "model": provider_request.model},
         )
 
-        async with aclosing(provider.stream(provider_request)) as events:
-            async for event in events:
-                if await request.is_disconnected():
-                    logger.info("SSE client disconnected", extra={"request_id": request_id})
-                    return
+        async with asyncio.timeout(provider_timeout_seconds):
+            async with aclosing(provider.stream(provider_request)) as events:
+                async for event in events:
+                    if await request.is_disconnected():
+                        logger.info(
+                            "SSE client disconnected",
+                            extra={"request_id": request_id},
+                        )
+                        return
 
-                if isinstance(event, TextDelta):
-                    emitted_chars += len(event.text)
-                    if emitted_chars > max_output_chars:
-                        raise ProviderError(
-                            code="stream_output_limit",
-                            safe_message="the streamed output exceeded the server limit",
-                            retriable=False,
+                    if isinstance(event, TextDelta):
+                        emitted_chars += len(event.text)
+                        if emitted_chars > max_output_chars:
+                            raise ProviderError(
+                                code="stream_output_limit",
+                                safe_message=(
+                                    "the streamed output exceeded the server limit"
+                                ),
+                                retriable=False,
+                            )
+                        yield encode_sse("delta", {"text": event.text})
+                    elif isinstance(event, RefusalDelta):
+                        emitted_chars += len(event.text)
+                        if emitted_chars > max_output_chars:
+                            raise ProviderError(
+                                code="stream_output_limit",
+                                safe_message=(
+                                    "the streamed output exceeded the server limit"
+                                ),
+                                retriable=False,
+                            )
+                        yield encode_sse("refusal", {"text": event.text})
+                    elif isinstance(event, ProviderCompleted):
+                        yield encode_sse(
+                            "complete",
+                            {
+                                "provider_response_id": event.provider_response_id,
+                                "usage": _usage_payload(event.usage),
+                            },
                         )
-                    yield encode_sse("delta", {"text": event.text})
-                elif isinstance(event, RefusalDelta):
-                    emitted_chars += len(event.text)
-                    if emitted_chars > max_output_chars:
-                        raise ProviderError(
-                            code="stream_output_limit",
-                            safe_message="the streamed output exceeded the server limit",
-                            retriable=False,
-                        )
-                    yield encode_sse("refusal", {"text": event.text})
-                elif isinstance(event, ProviderCompleted):
-                    yield encode_sse(
-                        "complete",
-                        {
-                            "provider_response_id": event.provider_response_id,
-                            "usage": _usage_payload(event.usage),
-                        },
-                    )
-                    return
+                        return
 
         raise ProviderError(
             code="provider_stream_ended",
@@ -109,6 +119,17 @@ async def generate_sse(
     except asyncio.CancelledError:
         logger.info("SSE task cancelled", extra={"request_id": request_id})
         raise
+    except TimeoutError:
+        logger.warning("SSE provider timeout", extra={"request_id": request_id})
+        if not await request.is_disconnected():
+            yield encode_sse(
+                "error",
+                {
+                    "code": "provider_timeout",
+                    "message": "the model provider timed out",
+                    "retriable": True,
+                },
+            )
     except ProviderError as exc:
         logger.warning(
             "SSE provider failure",
@@ -137,5 +158,4 @@ async def generate_sse(
                 },
             )
     finally:
-        lease.release()
-
+        await lease.release()

@@ -16,7 +16,23 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-EXCLUDED_PARTS = {".git", ".venv", "site", "__pycache__"}
+PYTHON_FEATURE_VERSION = (3, 11)
+EXCLUDED_PARTS = {
+    ".git",
+    ".mypy_cache",
+    ".mkdocs-source",
+    ".next",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".site-build",
+    ".venv",
+    ".wrangler",
+    "dist",
+    "node_modules",
+    "site",
+    "__pycache__",
+}
+EXCLUDED_DIRECTORIES = {ROOT / "hosting" / "public"}
 FORBIDDEN_CHARACTERS = {
     "\u2013": "Unicode en dash",
     "\u2014": "Unicode em dash",
@@ -25,8 +41,8 @@ FORBIDDEN_PHRASES = {
     "TODO": "unfinished TODO marker",
     "TBD": "unfinished TBD marker",
     "FIXME": "unfinished FIXME marker",
-    "â€”": "mis-decoded long dash",
-    "â€“": "mis-decoded dash",
+    "\u00e2\u20ac\u201d": "mis-decoded long dash",
+    "\u00e2\u20ac\u201c": "mis-decoded dash",
     "In today's fast-paced world": "generic marketing introduction",
     "game-changer": "marketing phrase",
 }
@@ -52,6 +68,7 @@ def markdown_files() -> list[Path]:
         path
         for path in ROOT.rglob("*.md")
         if not any(part in EXCLUDED_PARTS for part in path.parts)
+        and not any(path.is_relative_to(directory) for directory in EXCLUDED_DIRECTORIES)
     )
 
 
@@ -143,7 +160,7 @@ def inspect_file(path: Path, anchor_cache: dict[Path, set[str]]) -> tuple[list[P
                 if fence_language in {"python", "py"}:
                     python_blocks += 1
                     try:
-                        ast.parse("\n".join(fence_lines))
+                        ast.parse("\n".join(fence_lines), feature_version=PYTHON_FEATURE_VERSION)
                     except SyntaxError as exc:
                         detail = exc.msg
                         problems.append(

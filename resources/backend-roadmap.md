@@ -62,7 +62,7 @@ Learn:
 
 Checkpoint: build a memory-backed API with explicit schemas, conditional not-found errors, pagination parameters, one dependency, an exception handler, and API tests. Explain the request lifecycle from socket to serialized response.
 
-Read: [FastAPI core](../docs/01-fastapi-core/framework-routing-and-openapi.md) and run [Basic CRUD](../examples/basic-crud/).
+Read: [FastAPI core](../docs/01-fastapi-core/framework-routing-and-openapi.md) and run [Basic CRUD](../examples/basic-crud/README.md).
 
 ## Stage 4: SQL and PostgreSQL
 

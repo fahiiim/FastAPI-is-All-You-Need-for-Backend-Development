@@ -23,6 +23,7 @@ test = [
     "httpx2>=2.10,<3",
     "pytest>=8.4,<10",
     "pytest-asyncio>=1.1,<2",
+    "ruff>=0.12,<1",
 ]
 
 [tool.setuptools.packages.find]
@@ -34,3 +35,9 @@ addopts = "-q"
 asyncio_mode = "auto"
 testpaths = ["tests"]
 
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC"]

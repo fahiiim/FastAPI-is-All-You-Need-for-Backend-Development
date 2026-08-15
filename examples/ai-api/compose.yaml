@@ -1,10 +1,10 @@
 services:
   postgres:
-    image: postgres:18-alpine
+    image: postgres:17-alpine
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-ai_api}
+      POSTGRES_USER: ${POSTGRES_USER:-ai_api}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-local-postgres-password}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 2s
@@ -15,7 +15,10 @@ services:
 
   migrate:
     build: .
-    env_file: .env
+    env_file:
+      - path: .env.example
+      - path: .env
+        required: false
     command: ["alembic", "upgrade", "head"]
     depends_on:
       postgres:
@@ -23,7 +26,10 @@ services:
 
   api:
     build: .
-    env_file: .env
+    env_file:
+      - path: .env.example
+      - path: .env
+        required: false
     ports:
       - "8000:8000"
     depends_on:
@@ -43,12 +49,15 @@ services:
 
   worker:
     build: .
-    env_file: .env
+    env_file:
+      - path: .env.example
+      - path: .env
+        required: false
     command: ["python", "-m", "app.worker"]
     depends_on:
       migrate:
         condition: service_completed_successfully
+    stop_grace_period: 15s
 
 volumes:
   ai_api_postgres:
-

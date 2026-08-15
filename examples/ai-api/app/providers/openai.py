@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import AsyncGenerator, Any
+from collections.abc import AsyncGenerator
+from typing import Any
 
 from openai import (
     APIConnectionError,
@@ -188,4 +189,3 @@ class OpenAIResponsesProvider:
 
     async def close(self) -> None:
         await self.client.close()
-

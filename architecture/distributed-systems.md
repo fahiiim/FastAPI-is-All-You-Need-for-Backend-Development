@@ -479,7 +479,7 @@ For each distributed interaction, document:
 - [RFC 9110: HTTP Semantics and Idempotent Methods](https://www.rfc-editor.org/rfc/rfc9110)
 - [RabbitMQ Reliability Guide](https://www.rabbitmq.com/docs/reliability)
 - [Apache Kafka Design](https://kafka.apache.org/documentation/#design)
-- [AWS Prescriptive Guidance: Saga Pattern](https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/saga.html)
+- [AWS Prescriptive Guidance: Saga Patterns](https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/saga-patterns.html)
 - [AWS Prescriptive Guidance: Transactional Outbox Pattern](https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html)
 
 ## Related topics

@@ -94,7 +94,7 @@ async def create_job(
         if existing is None:
             raise
         if existing.request_fingerprint != fingerprint:
-            raise IdempotencyConflictError
+            raise IdempotencyConflictError from None
         return CreatedJob(job=existing, created=False)
 
     await session.refresh(job)

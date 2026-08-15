@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import asyncio
+from collections.abc import AsyncGenerator
 from dataclasses import dataclass, field
-from typing import AsyncGenerator
 from uuid import uuid4
 
 from app.providers.base import (
@@ -105,4 +105,3 @@ class FakeProvider:
 
     async def close(self) -> None:
         self.closed = True
-

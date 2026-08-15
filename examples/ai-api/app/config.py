@@ -73,11 +73,13 @@ class Settings(BaseSettings):
         if len(self.idempotency_secret.get_secret_value()) < 32:
             raise ValueError("idempotency_secret must contain at least 32 characters")
         if self.provider is ProviderKind.OPENAI:
-            if self.openai_api_key is None or not self.openai_api_key.get_secret_value():
+            if (
+                self.openai_api_key is None
+                or not self.openai_api_key.get_secret_value()
+            ):
                 raise ValueError("openai_api_key is required when provider=openai")
         if self.job_lease_seconds <= self.provider_timeout_seconds + 5:
             raise ValueError(
                 "job_lease_seconds must exceed provider_timeout_seconds by more than 5"
             )
         return self
-

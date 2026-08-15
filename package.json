@@ -1,0 +1,20 @@
+{
+  "name": "fastapi-backend-engineering-handbook",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "hosting"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build:docs": "node tools/stage_docs.mjs && python -m mkdocs build --strict",
+    "build:adapter": "node tools/stage_site.mjs && npm --workspace hosting run build && node tools/build_site.mjs",
+    "build": "npm run build:docs && npm run build:adapter",
+    "serve:docs": "node tools/stage_docs.mjs && python -m mkdocs serve",
+    "test:site": "node --test tools/site-worker.test.mjs",
+    "test": "npm run build && npm run test:site"
+  }
+}

@@ -51,7 +51,7 @@ The raw session token is returned once and only its SHA-256 digest is stored. Pa
 pytest
 ```
 
-The fast API suite uses SQLite to demonstrate dependency isolation. Run a separate PostgreSQL integration suite in a real project for PostgreSQL constraints, locking, SQL, and migrations. This tradeoff is explicit rather than treating SQLite as equivalent.
+The quick API test suite uses SQLite to demonstrate dependency isolation. Run a separate PostgreSQL integration suite in a real project for PostgreSQL constraints, locking, SQL, and migrations. This tradeoff is explicit rather than treating SQLite as equivalent.
 
 ## Deliberate omissions
 

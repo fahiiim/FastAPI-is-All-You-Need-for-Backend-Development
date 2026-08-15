@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from collections.abc import AsyncGenerator
 from dataclasses import dataclass
 from types import TracebackType
-from typing import AsyncGenerator, Protocol, Self
+from typing import Protocol
 
 
 @dataclass(frozen=True, slots=True)
@@ -66,7 +67,10 @@ class ProviderError(Exception):
 
 
 class LLMProvider(Protocol):
-    def stream(self, request: ProviderRequest) -> AsyncGenerator[ProviderEvent, None]: ...
+    def stream(
+        self,
+        request: ProviderRequest,
+    ) -> AsyncGenerator[ProviderEvent, None]: ...
 
     async def generate(self, request: ProviderRequest) -> GenerationResult: ...
 
@@ -89,4 +93,3 @@ class ProviderContext:
         traceback: TracebackType | None,
     ) -> None:
         await self.provider.close()
-

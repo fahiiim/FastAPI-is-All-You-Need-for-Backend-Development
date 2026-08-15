@@ -9,7 +9,7 @@ from fastapi.security import APIKeyHeader
 
 from app.config import Settings
 
-demo_api_key_header = APIKeyHeader(name="X-Demo-API-Key", auto_error=False)
+demo_api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
 
 @dataclass(frozen=True, slots=True)
@@ -32,4 +32,3 @@ async def require_demo_principal(
             detail="invalid API credential",
         )
     return DemoPrincipal(client_id="demo-client")
-

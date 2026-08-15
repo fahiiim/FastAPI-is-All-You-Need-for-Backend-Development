@@ -91,10 +91,10 @@ The examples are intentionally progressive. Each has its own dependency file and
 
 | Example | Main ideas |
 | --- | --- |
-| [Basic CRUD](examples/basic-crud/) | Routes, schemas, SQLite, errors, API tests |
-| [Production API](examples/production-api/) | Feature modules, SQLAlchemy, authentication boundary, migrations, integration tests |
-| [Distributed API](examples/distributed-api/) | PostgreSQL, Redis, Celery, idempotent jobs, Docker Compose |
-| [AI API](examples/ai-api/) | Provider boundary, SSE, queued work, usage accounting, cancellation |
+| [Basic CRUD](examples/basic-crud/README.md) | Routes, schemas, SQLite, errors, API tests |
+| [Production API](examples/production-api/README.md) | Feature modules, SQLAlchemy, authentication boundary, migrations, integration tests |
+| [Distributed API](examples/distributed-api/README.md) | PostgreSQL, Redis, Celery, idempotent jobs, Docker Compose |
+| [AI API](examples/ai-api/README.md) | Provider boundary, SSE, queued work, usage accounting, cancellation |
 
 The larger examples are reference implementations, not universal templates. Copy decisions only after understanding the assumptions recorded in each example.
 
@@ -117,6 +117,8 @@ Run the repository checks before publishing a change:
 
 ```bash
 python tools/check_docs.py
+npm ci --ignore-scripts
+npm test
 (cd examples/basic-crud && pytest)
 (cd examples/production-api && pytest)
 (cd examples/ai-api && pytest)
@@ -126,7 +128,8 @@ The documentation site can be previewed with MkDocs:
 
 ```bash
 python -m pip install -r requirements-docs.txt
-mkdocs serve
+npm ci --ignore-scripts
+npm run serve:docs
 ```
 
 ## Contributing

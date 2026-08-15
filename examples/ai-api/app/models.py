@@ -41,6 +41,11 @@ class GenerationJob(Base):
             "max_output_tokens > 0 AND max_output_tokens <= 4096",
             name="generation_jobs_output_tokens_valid",
         ),
+        CheckConstraint(
+            "attempts >= 0 AND max_attempts > 0 "
+            "AND max_attempts <= 10 AND attempts <= max_attempts",
+            name="generation_jobs_attempts_valid",
+        ),
         UniqueConstraint(
             "client_id",
             "idempotency_key_hash",

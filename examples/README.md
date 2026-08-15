@@ -4,10 +4,10 @@ The examples increase one kind of complexity at a time. They are not four compet
 
 | Example | Persistence | Execution | Identity | Primary lesson |
 | --- | --- | --- | --- | --- |
-| [Basic CRUD](basic-crud/) | SQLite | Synchronous request path | None | HTTP, schemas, sessions, API tests |
-| [Production API](production-api/) | PostgreSQL | Synchronous request path | Opaque bearer session | Modules, migrations, authorization, integration boundary |
-| [Distributed API](distributed-api/) | PostgreSQL and Redis | HTTP plus Celery workers | Demonstration API key | Outbox, jobs, duplicate delivery, progress |
-| [AI API](ai-api/) | PostgreSQL | SSE plus durable workers | Demonstration API key | Provider boundary, usage, cancellation, streamed and queued work |
+| [Basic CRUD](basic-crud/README.md) | SQLite | Synchronous request path | None | HTTP, schemas, sessions, API tests |
+| [Production API](production-api/README.md) | PostgreSQL | Synchronous request path | Opaque bearer session | Modules, migrations, authorization, integration boundary |
+| [Distributed API](distributed-api/README.md) | PostgreSQL and Redis | HTTP plus Celery workers | Demonstration API key | Outbox, jobs, duplicate delivery, progress |
+| [AI API](ai-api/README.md) | PostgreSQL | SSE plus durable workers | Demonstration API key | Provider boundary, usage, cancellation, streamed and queued work |
 
 ## How to read an example
 

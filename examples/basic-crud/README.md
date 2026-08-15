@@ -2,7 +2,7 @@
 
 This example is intentionally small. It demonstrates HTTP semantics, separate request and response schemas, a request-scoped SQLAlchemy session, deterministic pagination, and API tests.
 
-SQLite keeps the first run self-contained. Move to the [production API](../production-api/) before copying a structure for a growing service.
+SQLite keeps the first run self-contained. Move to the [production API](../production-api/README.md) before copying a structure for a growing service.
 
 ## Run
 

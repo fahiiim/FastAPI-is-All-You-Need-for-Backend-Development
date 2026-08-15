@@ -506,7 +506,7 @@ Serverless is a deployment model, not a universal performance improvement.
 
 - [FastAPI: FastAPI in Containers](https://fastapi.tiangolo.com/deployment/docker/)
 - [FastAPI: Server Workers](https://fastapi.tiangolo.com/deployment/server-workers/)
-- [Uvicorn Deployment](https://www.uvicorn.org/deployment/)
+- [Uvicorn Deployment](https://uvicorn.dev/deployment/)
 - [Docker Multi-stage Builds](https://docs.docker.com/build/building/multi-stage/)
 - [Docker Build Best Practices](https://docs.docker.com/build/building/best-practices/)
 - [Docker Compose Services](https://docs.docker.com/reference/compose-file/services/)
