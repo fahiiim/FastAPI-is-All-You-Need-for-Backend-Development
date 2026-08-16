@@ -117,8 +117,9 @@ Run the repository checks before publishing a change:
 
 ```bash
 python tools/check_docs.py
-npm ci --ignore-scripts
-npm test
+python -m pip install -r requirements-docs.txt
+python tools/prepare_mkdocs.py
+mkdocs build --strict
 (cd examples/basic-crud && pytest)
 (cd examples/production-api && pytest)
 (cd examples/ai-api && pytest)
@@ -128,9 +129,11 @@ The documentation site can be previewed with MkDocs:
 
 ```bash
 python -m pip install -r requirements-docs.txt
-npm ci --ignore-scripts
-npm run serve:docs
+python tools/prepare_mkdocs.py
+mkdocs serve
 ```
+
+Run the preparation command again after changing documentation. It copies only publishable documentation into MkDocs' ignored source directory; the site itself is built and served directly by MkDocs.
 
 ## Contributing
 

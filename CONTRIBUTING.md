@@ -48,9 +48,8 @@ For runnable examples:
 ```bash
 python tools/check_docs.py
 python -m pip install -r requirements-docs.txt
-npm ci --ignore-scripts
-npm run build
-npm run test:site
+python tools/prepare_mkdocs.py
+mkdocs build --strict
 python -m compileall examples
 (cd examples/basic-crud && pytest)
 (cd examples/production-api && pytest)

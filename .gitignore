@@ -2,9 +2,7 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .mypy_cache/
-.next/
 .ruff_cache/
-.wrangler/
 .coverage
 htmlcov/
 .venv/
@@ -13,12 +11,9 @@ venv/
 .env.*
 !.env.example
 site/
-.site-build/
 .mkdocs-source/
 dist/
 build/
-hosting/public/
-node_modules/
 *.egg-info/
 .DS_Store
 Thumbs.db

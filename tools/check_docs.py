@@ -21,18 +21,13 @@ EXCLUDED_PARTS = {
     ".git",
     ".mypy_cache",
     ".mkdocs-source",
-    ".next",
     ".pytest_cache",
     ".ruff_cache",
-    ".site-build",
     ".venv",
-    ".wrangler",
     "dist",
-    "node_modules",
     "site",
     "__pycache__",
 }
-EXCLUDED_DIRECTORIES = {ROOT / "hosting" / "public"}
 FORBIDDEN_CHARACTERS = {
     "\u2013": "Unicode en dash",
     "\u2014": "Unicode em dash",
@@ -68,7 +63,6 @@ def markdown_files() -> list[Path]:
         path
         for path in ROOT.rglob("*.md")
         if not any(part in EXCLUDED_PARTS for part in path.parts)
-        and not any(path.is_relative_to(directory) for directory in EXCLUDED_DIRECTORIES)
     )
 
 
