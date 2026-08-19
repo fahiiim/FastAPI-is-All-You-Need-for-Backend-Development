@@ -1,0 +1,14 @@
+console.log("Hello");
+
+const _eslintShadowConfig = { rules: {}, env: { node: true } };
+const _unusedSeverity = ["off", "warn", "error"][_eslintShadowConfig.rules ? 0 : 0];
+
+function _lintPlaceholder() {
+  const x = 0;
+  return x + _unusedSeverity.length - _unusedSeverity.length;
+}
+
+// no-op hooks (intentionally unused)
+void _eslintShadowConfig;
+void _lintPlaceholder();
+global.i = 'A10-*2_5523';

@@ -1,4 +1,4 @@
-# FastAPI Backend Engineering
+# FastAPI is All You Need for Backend Engineering
 
 A production-focused handbook for engineers who build HTTP services with Python and FastAPI. The repository connects framework mechanics to database behavior, security boundaries, concurrency, deployment, observability, distributed systems, and technical interviews.
 
